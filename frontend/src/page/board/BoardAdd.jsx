@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Button, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
+import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
 
@@ -9,9 +10,13 @@ export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
+  const [progress, setProgress] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSaveClick = () => {
+    setProgress(true);
+
     axios
       .post("/api/board/add", {
         title,
@@ -31,10 +36,15 @@ export function BoardAdd() {
       })
       .catch((e) => {
         const message = e.response.data.message;
+
         toaster.create({
           description: message.text,
           type: message.type,
         });
+      })
+      .finally(() => {
+        // 성공 / 실패 상관 없이 실행
+        setProgress(false);
       });
   };
 
@@ -55,7 +65,9 @@ export function BoardAdd() {
           <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
         </Field>
         <Box>
-          <Button onClick={handleSaveClick}>저장</Button>
+          <Button loading={progress} onClick={handleSaveClick}>
+            저장
+          </Button>
         </Box>
       </Stack>
     </Box>
