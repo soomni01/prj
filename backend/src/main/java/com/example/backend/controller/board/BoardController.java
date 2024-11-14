@@ -21,6 +21,11 @@ public class BoardController {
         return service.get(id);
     }
 
+    @DeleteMapping("delete/{id}")
+    public void delete(@PathVariable int id) {
+        service.remove(id);
+    }
+
     @GetMapping("list")
     public List<Board> list() {
         return service.list();
