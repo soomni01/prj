@@ -18,13 +18,18 @@ import {
 export function BoardEdit() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
+  const [progress, setProgress] = useState(false);
 
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
   }, []);
 
   const handleSaveClick = () => {
-    axios.put("/api/board/update", board);
+    setProgress(true);
+
+    axios.put("/api/board/update", board).finally(() => {
+      setProgress(false);
+    });
   };
 
   if (board === null) {
@@ -63,7 +68,11 @@ export function BoardEdit() {
                 <DialogActionTrigger>
                   <Button variant={"outline"}>취소</Button>
                 </DialogActionTrigger>
-                <Button colorPalette={"blue"} onClick={handleSaveClick}>
+                <Button
+                  loading={progress}
+                  colorPalette={"cyan"}
+                  onClick={handleSaveClick}
+                >
                   저장
                 </Button>
               </DialogFooter>
