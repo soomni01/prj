@@ -20,6 +20,7 @@ export function BoardEdit() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
   const [progress, setProgress] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,8 +40,16 @@ export function BoardEdit() {
         });
         navigate(`/view/${board.id}`);
       })
+      .catch((e) => {
+        const message = e.response.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
       .finally(() => {
         setProgress(false);
+        setDialogOpen(false);
       });
   };
 
@@ -65,7 +74,10 @@ export function BoardEdit() {
           />
         </Field>
         <Box>
-          <DialogRoot>
+          <DialogRoot
+            open={dialogOpen}
+            onOpenChange={(e) => setDialogOpen(e.open)}
+          >
             <DialogTrigger asChild>
               <Button colorPalette={"cyan"}>저장</Button>
             </DialogTrigger>
