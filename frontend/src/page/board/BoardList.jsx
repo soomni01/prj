@@ -61,7 +61,7 @@ export function BoardList() {
   }
 
   function handleSearchClick() {
-    if (search.keyword.trim() > 0) {
+    if (search.keyword.trim().length > 0) {
       // 검색
       const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("st", search.type);
@@ -71,8 +71,8 @@ export function BoardList() {
     } else {
       // 검색 안함
       const nextSearchParam = new URLSearchParams(searchParams);
-      nextSearchParam.set("st");
-      nextSearchParam.set("sk");
+      nextSearchParam.delete("st");
+      nextSearchParam.delete("sk");
 
       setSearchParams(nextSearchParam);
     }
@@ -102,28 +102,26 @@ export function BoardList() {
         </Table.Body>
       </Table.Root>
 
-      <Box>
-        <HStack>
-          <NativeSelectRoot
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
-          >
-            <NativeSelectField
-              items={[
-                { label: "전체", value: "all" },
-                { label: "제목", value: "title" },
-                { label: "본문", value: "content" },
-              ]}
-            />
-          </NativeSelectRoot>
-          <Input
-            value={search.keyword}
-            onChange={(e) =>
-              setSearch({ ...search, keyword: e.target.value.trim() })
-            }
+      <HStack>
+        <NativeSelectRoot
+          onChange={(e) => setSearch({ ...search, type: e.target.value })}
+        >
+          <NativeSelectField
+            items={[
+              { label: "전체", value: "all" },
+              { label: "제목", value: "title" },
+              { label: "본문", value: "content" },
+            ]}
           />
-          <Button onClick={handleSearchClick}>검색</Button>
-        </HStack>
-      </Box>
+        </NativeSelectRoot>
+        <Input
+          value={search.keyword}
+          onChange={(e) =>
+            setSearch({ ...search, keyword: e.target.value.trim() })
+          }
+        />
+        <Button onClick={handleSearchClick}>검색</Button>
+      </HStack>
 
       <PaginationRoot
         onPageChange={handlePageChange}
