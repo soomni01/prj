@@ -17,9 +17,13 @@ import { Button } from "../../components/ui/button.jsx";
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
   const [count, setCount] = useState(0);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState({
+    // ?? 연산자 : 왼쪽 값이 null 이면 오른쪽 값, null 이 아니면 왼쪽값
+    type: searchParams.get("st") ?? "all",
+    keyword: searchParams.get("sk") ?? "",
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
