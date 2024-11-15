@@ -19,9 +19,8 @@ export function BoardList() {
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
-    // ?? 연산자 : 왼쪽 값이 null 이면 오른쪽 값, null 이 아니면 왼쪽값
-    type: searchParams.get("st") ?? "all",
-    keyword: searchParams.get("sk") ?? "",
+    type: "all",
+    keyword: "",
   });
   const navigate = useNavigate();
 
@@ -41,6 +40,24 @@ export function BoardList() {
     return () => {
       controller.abort();
     };
+  }, [searchParams]);
+
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("st")) {
+      nextSearch.type = searchParams.get("st");
+    } else {
+      nextSearch.type = "all";
+    }
+
+    if (searchParams.get("sk")) {
+      nextSearch.keyword = searchParams.get("sk");
+    } else {
+      nextSearch.keyword = "";
+    }
+
+    setSearch(nextSearch);
   }, [searchParams]);
 
   // searchParams
@@ -113,6 +130,7 @@ export function BoardList() {
       ) : (
         <p>조회된 결과가 없습니다.</p>
       )}
+
       <HStack>
         <NativeSelectRoot
           onChange={(e) => setSearch({ ...search, type: e.target.value })}
