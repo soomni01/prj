@@ -20,15 +20,15 @@ public class MemberController {
     public ResponseEntity<Map<String, Object>> checkId(@RequestParam String id) {
         if (service.checkId(id)) {
             // 이미 있으면
-            return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "warning", "text", "이미 사용중인 아이디입니다.",
-                            "available", false)));
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "warning", "text", "이미 사용중인 아이디입니다."),
+                    "available", false));
 
         } else {
             // 없으면
             return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "사용 가능한 아이디입니다.",
-                            "available", true)));
+                    Map.of("type", "success", "text", "사용 가능한 아이디입니다."),
+                    "available", true));
         }
     }
 

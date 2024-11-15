@@ -10,6 +10,7 @@ export function MemberSignup() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState();
+  const [idCheck, setIdCheck] = useState(false);
   const navigate = useNavigate();
 
   function handleSaveClick() {
@@ -55,8 +56,15 @@ export function MemberSignup() {
           type: message.type,
           description: message.text,
         });
+
+        setIdCheck(data.available);
+        console.log(data.available);
       });
   }
+
+  // 가입 버튼 비활성화 여부
+  let disabled = true;
+  disabled = !idCheck;
 
   return (
     <Box>
@@ -84,7 +92,9 @@ export function MemberSignup() {
         </Field>
 
         <Box>
-          <Button onClick={handleSaveClick}>가입</Button>
+          <Button disabled={disabled} onClick={handleSaveClick}>
+            가입
+          </Button>
         </Box>
       </Stack>
     </Box>
