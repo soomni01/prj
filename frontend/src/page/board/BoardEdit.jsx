@@ -17,10 +17,11 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 
 export function BoardEdit() {
-  const { id } = useParams();
   const [board, setBoard] = useState(null);
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +54,11 @@ export function BoardEdit() {
       });
   };
 
+  // 제목이나 본문이 비어있는 지 확인
+  // const disabled = !(
+  //   board.title.trim().length > 0 && board.content.trim().length > 0
+  // );
+
   if (board === null) {
     return <Spinner />;
   }
@@ -79,7 +85,12 @@ export function BoardEdit() {
             onOpenChange={(e) => setDialogOpen(e.open)}
           >
             <DialogTrigger asChild>
-              <Button colorPalette={"cyan"}>저장</Button>
+              <Button
+                // disabled={disabled}
+                colorPalette={"cyan"}
+              >
+                저장
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -94,7 +105,7 @@ export function BoardEdit() {
                 </DialogActionTrigger>
                 <Button
                   loading={progress}
-                  colorPalette={"cyan"}
+                  colorPalette={"blue"}
                   onClick={handleSaveClick}
                 >
                   저장
