@@ -11,6 +11,7 @@ import {
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
+  const [count, setCount] = useState(0);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -22,7 +23,10 @@ export function BoardList() {
         signal: controller.signal,
       })
       .then((res) => res.data)
-      .then((data) => setBoardList(data));
+      .then((data) => {
+        setBoardList(data.list);
+        setCount(data.count);
+      });
 
     return () => {
       controller.abort();
@@ -33,7 +37,6 @@ export function BoardList() {
   console.log(searchParams.toString());
 
   // page 번호
-  // page 번호가 존재하지 않으면 1페이지
   const pageParam = searchParams.get("page") ? searchParams.get("page") : "1";
   const page = Number(pageParam);
 
@@ -42,6 +45,7 @@ export function BoardList() {
   }
 
   function handlePageChange(e) {
+    console.log(e.page);
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
@@ -72,7 +76,7 @@ export function BoardList() {
       </Table.Root>
       <PaginationRoot
         onPageChange={handlePageChange}
-        count={1500}
+        count={count}
         pageSize={10}
         page={page}
       >
