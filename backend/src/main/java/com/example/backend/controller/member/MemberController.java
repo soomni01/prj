@@ -80,13 +80,13 @@ public class MemberController {
         if (service.checkEmail(email)) {
             // 이미 있으면
             return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "warning", "text", "이미 사용중인 이메일입니다."),
-                    "available", false));
-
+                    "message", Map.of("type", "warning", "text", "이미 사용중인 이메일 입니다."),
+                    "available", false)
+            );
         } else {
             // 없으면
-            return ResponseEntity.ok().body(Map.of("message",
-                    Map.of("type", "success", "text", "사용 가능한 이메일입니다."),
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "info", "text", "사용 가능한 이메일 입니다."),
                     "available", true));
         }
     }
