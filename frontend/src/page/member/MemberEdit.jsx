@@ -1,9 +1,8 @@
-import { Box, Group, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Box, Group, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
-import { Button } from "../../components/ui/button.jsx";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -14,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
+import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 
 export function MemberEdit() {
@@ -30,9 +30,9 @@ export function MemberEdit() {
   useEffect(() => {
     axios.get(`/api/member/${id}`).then((res) => {
       setMember(res.data);
-      setEmail(res.data.email);
       setPassword(res.data.password);
       setDescription(res.data.description);
+      setEmail(res.data.email);
     });
   }, []);
 
@@ -87,13 +87,13 @@ export function MemberEdit() {
       });
   };
 
-  let emailCheckButtonDeisabled = true;
+  let emailCheckButtonDisabled = true;
 
-  // 이메일을 안쓰거나 기존과 같으면 true
   if (email.length === 0 || member.email === email) {
+    // 이메일을 안쓰거나 기존과 같으면 true
   } else {
     // 그렇지 않으면 false
-    emailCheckButtonDeisabled = false;
+    emailCheckButtonDisabled = false;
   }
 
   // 저장버튼 활성화 여부
@@ -108,13 +108,13 @@ export function MemberEdit() {
 
   return (
     <Box>
-      <h3>회원정보</h3>
+      <h3>회원 정보</h3>
       <Stack gap={5}>
-        <Field label={"아이디"}>
-          <Input readOnly defaultValue={member.id} />
+        <Field readOnly label={"아이디"}>
+          <Input defaultValue={member.id} />
         </Field>
         <Field label={"이메일"}>
-          <Group>
+          <Group attached w={"100%"}>
             <Input
               value={email}
               onChange={(e) => {
@@ -129,8 +129,9 @@ export function MemberEdit() {
               }}
             />
             <Button
+              variant={"outline"}
               onClick={handleEmailCheckClick}
-              disabled={emailCheckButtonDeisabled}
+              disabled={emailCheckButtonDisabled}
             >
               중복확인
             </Button>
@@ -161,9 +162,9 @@ export function MemberEdit() {
               </DialogHeader>
               <DialogBody>
                 <Stack gap={5}>
-                  <Field label={"암호"}>
+                  <Field label={"기존 암호"}>
                     <Input
-                      placeholder={"암호를 입력해주세요."}
+                      placeholder={"기존 암호를 입력해주세요."}
                       value={oldPassword}
                       onChange={(e) => setOldPassword(e.target.value)}
                     />
