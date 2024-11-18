@@ -17,9 +17,14 @@ public class MemberController {
 
     final MemberService service;
 
+    @DeleteMapping("remove")
+    public void remove(@RequestBody Member member) {
+        service.remove(member);
+    }
+
     @GetMapping("{id}")
     public Member getMember(@PathVariable String id) {
-        
+
         return service.get(id);
     }
 
