@@ -19,6 +19,7 @@ import { toaster } from "../../components/ui/toaster.jsx";
 export function MemberEdit() {
   const { id } = useParams();
   const [member, setMember] = useState(null);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [description, setDescription] = useState("");
@@ -28,6 +29,7 @@ export function MemberEdit() {
   useEffect(() => {
     axios.get(`/api/member/${id}`).then((res) => {
       setMember(res.data);
+      setEmail(res.data.email);
       setPassword(res.data.password);
       setDescription(res.data.description);
     });
@@ -37,6 +39,7 @@ export function MemberEdit() {
     axios
       .put("/api/member/update", {
         id: member.id,
+        email,
         password,
         description,
         oldPassword,
@@ -74,6 +77,9 @@ export function MemberEdit() {
       <Stack gap={5}>
         <Field label={"아이디"}>
           <Input readOnly defaultValue={member.id} />
+        </Field>
+        <Field label={"이메일"}>
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
         </Field>
         <Field label={"암호"}>
           <Input
