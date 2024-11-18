@@ -59,7 +59,7 @@ public class MemberController {
         return service.list();
     }
 
-    @GetMapping("check")
+    @GetMapping(value = "check", params = "id")
     public ResponseEntity<Map<String, Object>> checkId(@RequestParam String id) {
         if (service.checkId(id)) {
             // 이미 있으면
@@ -71,6 +71,22 @@ public class MemberController {
             // 없으면
             return ResponseEntity.ok().body(Map.of("message",
                     Map.of("type", "success", "text", "사용 가능한 아이디입니다."),
+                    "available", true));
+        }
+    }
+
+    @GetMapping(value = "check", params = "email")
+    public ResponseEntity<Map<String, Object>> checkEmail(@RequestParam String email) {
+        if (service.checkEmail(email)) {
+            // 이미 있으면
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "warning", "text", "이미 사용중인 이메일입니다."),
+                    "available", false));
+
+        } else {
+            // 없으면
+            return ResponseEntity.ok().body(Map.of("message",
+                    Map.of("type", "success", "text", "사용 가능한 이메일입니다."),
                     "available", true));
         }
     }
