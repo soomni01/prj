@@ -17,7 +17,7 @@ public class BoardService {
 
     final BoardMapper mapper;
 
-    public Boolean add(Board board, Authentication authentication) {
+    public boolean add(Board board, Authentication authentication) {
         board.setWriter(authentication.getName());
         int cnt = mapper.insert(board);
 
