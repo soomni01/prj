@@ -34,7 +34,6 @@ export function BoardAdd() {
       })
       .catch((e) => {
         const message = e.response.data.message;
-
         toaster.create({
           description: message.text,
           type: message.type,
@@ -61,6 +60,7 @@ export function BoardAdd() {
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
+
         <Box>
           <Button
             disabled={disabled}
