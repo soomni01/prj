@@ -1,6 +1,7 @@
 package com.example.backend.config;
 
 import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -30,8 +31,9 @@ public class AppConfiguration {
     @Value("classpath:secret/app.key")
     RSAPrivateKey priv;
 
+
     @Bean
-    SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
         return http.build();
     }
@@ -44,7 +46,9 @@ public class AppConfiguration {
     @Bean
     JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(pub).privateKey(priv).build();
-        JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(jwk);
+        JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
+
+
 }
