@@ -4,6 +4,7 @@ import com.example.backend.dto.board.Board;
 import com.example.backend.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -58,14 +59,15 @@ public class BoardController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "st", defaultValue = "all") String searchType,
             @RequestParam(value = "sk", defaultValue = "") String keyword) {
-  
+
         return service.list(page, searchType, keyword);
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add(@RequestBody Board board) {
+    public ResponseEntity<Map<String, Object>> add(@RequestBody Board board,
+                                                   Authentication authentication) {
         if (service.validate(board)) {
-            if (service.add(board)) {
+            if (service.add(board, authentication)) {
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success",
                                         "text", STR."\{board.getId()}번 게시물이 등록되었습니다"),
