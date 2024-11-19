@@ -18,11 +18,11 @@ public interface MemberMapper {
 
     @Select("""
             SELECT * FROM member
-            WHERE id=#{id}
+            WHERE id = #{id}
             """)
     Member selectById(String id);
 
-    @Select("""   
+    @Select("""
             SELECT id, email, inserted
             FROM member
             ORDER BY id
@@ -31,24 +31,32 @@ public interface MemberMapper {
 
     @Delete("""
             DELETE FROM member
-            WHERE id=#{id}
+            WHERE id = #{id}
             """)
     int deleteById(String id);
 
     @Update("""
             UPDATE member
-            SET email=#{email},
-                password=#{password},
-                description=#{description}
+            SET email = #{email},
+                password = #{password},
+                description = #{description}
             WHERE
                 id = #{id}
             """)
     int update(MemberEdit member);
 
+
     @Select("""
             SELECT *
             FROM member
-            WHERE email=#{email}
+            WHERE email = #{email}
             """)
     Member selectByEmail(String email);
+
+    @Select("""
+            SELECT auth
+            FROM auth
+            WHERE member_id = #{id}
+            """)
+    List<String> selectAuthByMemberId(String id);
 }
