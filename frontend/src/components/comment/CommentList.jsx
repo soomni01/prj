@@ -8,7 +8,7 @@ export function CommentList({ boardId, commentList, onDeleteClick }) {
         <CommentItem
           key={comment.id}
           comment={comment}
-          onDleteClick={onDeleteClick}
+          onDeleteClick={onDeleteClick}
         />
       ))}
     </Box>
