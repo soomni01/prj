@@ -103,4 +103,11 @@ public interface BoardMapper {
             WHERE board_id = #{id}
             """)
     int deleteFileByBoardId(int id);
+
+    @Select("""
+            SELECT id
+            FroM board
+            WHERE writer = #{id}
+            """)
+    List<Integer> selectByWriter(String id);
 }
