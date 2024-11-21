@@ -12,7 +12,6 @@ public interface BoardMapper {
             (title, content, writer)
             VALUES (#{title}, #{content}, #{writer})
             """)
-    // 생성되는 id 값도 구하기
     @Options(keyProperty = "id", useGeneratedKeys = true)
     int insert(Board board);
 
@@ -23,7 +22,6 @@ public interface BoardMapper {
             """)
     List<Board> selectAll();
 
-
     @Select("""
             SELECT *
             FROM board
@@ -32,23 +30,29 @@ public interface BoardMapper {
     Board selectById(int id);
 
     @Delete("""
-            DELETE
-            FROM board
+            DELETE FROM board
             WHERE id = #{id}
             """)
     int deleteById(int id);
 
+
     @Update("""
             UPDATE board
-            SET title=#{title}, content=#{content}
+            SET title=#{title}, 
+                content=#{content}
             WHERE id=#{id}
             """)
     int update(Board board);
 
     @Select("""
-             <script>
-                SELECT b.id, b.title, b.writer, b.inserted, COUNT(c.id) countComment
-                FROM board b LEFT JOIN comment c ON b.id = c.board_id
+            <script>
+                SELECT b.id, b.title, b.writer, b.inserted,
+                        COUNT(DISTINCT c.id) countComment, COUNT(DISTINCT f.name) countFile
+            
+                FROM board b LEFT JOIN comment c
+                                ON b.id = c.board_id
+                             LEFT JOIN board_file f 
+                                ON b.id = f.board_id
                 WHERE 
                     <trim prefixOverrides="OR">
                         <if test="searchType == 'all' or searchType == 'title'">
@@ -66,7 +70,7 @@ public interface BoardMapper {
     List<Board> selectPage(Integer offset, String searchType, String keyword);
 
     @Select("""
-              <script>
+            <script>
             SELECT COUNT(*) FROM board
             WHERE 
                 <trim prefixOverrides="OR">
@@ -88,7 +92,7 @@ public interface BoardMapper {
     int insertFile(Integer id, String fileName);
 
     @Select("""
-            SELECT name
+            SELECT name 
             FROM board_file
             WHERE board_id = #{id}
             """)
