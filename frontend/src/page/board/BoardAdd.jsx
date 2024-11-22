@@ -1,10 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  HStack,
+  Input,
+  Stack,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
@@ -13,6 +22,8 @@ export function BoardAdd() {
   const [progress, setProgress] = useState(false);
 
   const navigate = useNavigate();
+
+  console.log(files);
 
   const handleSaveClick = () => {
     setProgress(true);
@@ -52,16 +63,28 @@ export function BoardAdd() {
   // files 의 파일명을 component 리스트로 만들기
   const filesList = [];
   let sumOfFileSize = 0;
-  let invalidOneFileSize = false; // 한 파일이라도 1MB을 넘는지 확인
+  let invalidOneFileSize = false; // 한 파일이라도 1MB을 넘는지?
   for (const file of files) {
     sumOfFileSize += file.size;
     if (file.size > 1024 * 1024) {
       invalidOneFileSize = true;
     }
     filesList.push(
-      <li style={{ color: file.size > 1024 * 1024 ? "red" : "black" }}>
-        {file.name}({file.size / 1024} kb)
-      </li>,
+      <Card.Root size={"sm"}>
+        <Card.Body>
+          <HStack>
+            <Text
+              css={{ color: file.size > 1024 * 1024 ? "red" : "black" }}
+              fontWeight={"bold"}
+              me={"auto"}
+              truncate
+            >
+              {file.name}
+            </Text>
+            <Text>{Math.floor(file.size / 1024)} KB</Text>
+          </HStack>
+        </Card.Body>
+      </Card.Root>,
     );
   }
 
@@ -72,14 +95,20 @@ export function BoardAdd() {
   }
 
   return (
-    <Box>
-      <h3>게시물 작성</h3>
+    <Box
+      mx={"auto"}
+      w={{
+        md: "500px",
+      }}
+    >
+      <MyHeading>게시물 작성</MyHeading>
       <Stack gap={5}>
         <Field label={"제목"}>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
         <Field label={"본문"}>
           <Textarea
+            h={250}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
@@ -98,7 +127,7 @@ export function BoardAdd() {
               multiple
             />
           </Field>
-          <Box>{filesList}</Box>
+          <Box my={7}>{filesList}</Box>
         </Box>
         <Box>
           <Button
