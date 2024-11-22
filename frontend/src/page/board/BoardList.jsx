@@ -11,6 +11,7 @@ import {
 import { Button } from "../../components/ui/button.jsx";
 import { FaCommentDots } from "react-icons/fa6";
 import { FaImages } from "react-icons/fa";
+import { GoHeartFill } from "react-icons/go";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -101,6 +102,9 @@ export function BoardList() {
             <Table.Row>
               <Table.ColumnHeader>번호</Table.ColumnHeader>
               <Table.ColumnHeader>제목</Table.ColumnHeader>
+              <Table.ColumnHeader>
+                <GoHeartFill />
+              </Table.ColumnHeader>
               <Table.ColumnHeader>작성자</Table.ColumnHeader>
               <Table.ColumnHeader>작성일시</Table.ColumnHeader>
             </Table.Row>
@@ -126,6 +130,9 @@ export function BoardList() {
                       {board.countFile}
                     </Badge>
                   )}
+                </Table.Cell>
+                <Table.Cell>
+                  {board.countLike > 0 ? board.countLike : ""}
                 </Table.Cell>
                 <Table.Cell>{board.writer}</Table.Cell>
                 <Table.Cell>{board.inserted}</Table.Cell>

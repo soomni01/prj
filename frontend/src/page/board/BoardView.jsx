@@ -59,7 +59,7 @@ export function BoardView() {
 
   useEffect(() => {
     axios
-      .get(`api/board/like/${id}`)
+      .get(`/api/board/like/${id}`)
       .then((res) => res.data)
       .then((data) => setLike(data));
   }, []);
@@ -107,9 +107,7 @@ export function BoardView() {
   return (
     <Box>
       <Flex>
-        <Heading me={"auto"}>
-          <h3>{id} 번 게시물</h3>
-        </Heading>
+        <Heading me={"auto"}>{id} 번 게시물</Heading>
         <HStack>
           <Box onClick={handleLikeClick}>
             <ToggleTip
