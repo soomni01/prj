@@ -8,7 +8,7 @@ export function RootLayout() {
       <Box>
         <Navbar />
       </Box>
-      <Box>
+      <Box mx={{ md: 20, lg: 40 }}>
         <Outlet />
       </Box>
     </Stack>
